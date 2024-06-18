@@ -3,40 +3,28 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { ProfileFormProps } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Label } from "./ui/label";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { Experience, ProfileFormProps } from "@/types";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { CircleUser } from "lucide-react";
 import TagInput from "./TagInput";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
 import { skillsOptions } from "@/utils/index";
+import ExperienceInput from "./ExperienceInput";
+import { ToastNotification } from "../ToastNotification";
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
-  const router = useRouter();
-
   const [profile, setProfile] = useState({
     displayName: user.displayName || "",
     email: user.email || "",
     photoUrl: user.photoUrl || "",
     industry: ["Tech"], // Fixed to 'Tech' industry
     skills: user.skills,
-    experience:
-      user.experience
-        .map((exp) => `${exp.title} at ${exp.company}`)
-        .join(", ") || "",
+    experience: user.experience || [],
   });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setProfile({
-      ...profile,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const handleSkillsChange = (items: string[]) => {
     setProfile({
@@ -45,17 +33,35 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
     });
   };
 
+  const handleExperienceChange = (experiences: Experience[]) => {
+    setProfile({
+      ...profile,
+      experience: experiences,
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Updating profile");
     try {
-      const response = await axios.post("/api/auth", profile, {
-        withCredentials: true,
+      const response = await axios.post(
+        "http://localhost:8080/user/profile",
+        profile,
+        {
+          withCredentials: true,
+        }
+      );
+      ToastNotification({
+        message: "Profile updated successfully",
+        result: "success",
       });
-      alert("Profile updated successfully");
-      router.refresh();
+      // router.refresh();
     } catch (error) {
       console.error("Error updating profile", error);
-      alert("Error updating profile");
+      ToastNotification({
+        message: "Error updating profile",
+        result: "error",
+      });
     }
   };
 
@@ -114,20 +120,20 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
                 />
               </div>
               <div className="mb-4">
-                <Label htmlFor="experience">Experience</Label>
-                <Textarea
-                  id="experience"
-                  name="experience"
-                  value={profile.experience}
-                  onChange={handleChange}
+                <ExperienceInput
+                  experiences={profile.experience}
+                  onExperiencesChange={handleExperienceChange}
                 />
               </div>
-              <Button type="submit">Update Profile</Button>
+              <Button onClick={handleSubmit} type="submit">
+                Update Profile
+              </Button>
             </form>
           </CardContent>
         </Card>
       </TabsContent>
-      <TabsContent value="password">
+      {/* tab 2 */}
+      {/* <TabsContent value="password">
         <Card>
           <CardHeader>
             <CardTitle>Update Profile</CardTitle>
@@ -174,7 +180,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
             </form>
           </CardContent>
         </Card>
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   );
 };

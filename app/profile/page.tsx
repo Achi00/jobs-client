@@ -1,7 +1,7 @@
 import axios from "axios";
 import { cookies } from "next/headers";
-import ProfileForm from "@/components/ProfileForm";
 import { User } from "@/types";
+import ProfileForm from "@/components/profile/ProfileForm";
 
 async function fetchUserData(cookie: string): Promise<User> {
   const API_BASE_URL = process.env.API_BASE_URL as string;

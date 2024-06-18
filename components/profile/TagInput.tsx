@@ -2,8 +2,8 @@
 
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 interface TagInputProps {
   tags: string[];

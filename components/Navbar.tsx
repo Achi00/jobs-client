@@ -42,9 +42,11 @@ const Navbar = () => {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm">
-              Sign in
-            </Button>
+            <a href="http://localhost:8080/auth/google">
+              <Button variant="outline" size="sm">
+                Sign in
+              </Button>
+            </a>
             <Button size="sm">Sign up</Button>
           </div>
         </div>
