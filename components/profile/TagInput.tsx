@@ -76,6 +76,7 @@ const TagInput: React.FC<TagInputProps> = ({
         ))}
       </div>
       <Input
+        autoComplete="off"
         id={id}
         type="text"
         value={inputValue}

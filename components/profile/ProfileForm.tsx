@@ -3,20 +3,20 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Experience, ProfileFormProps } from "@/types";
+import { Experience, UserProps } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-import { CircleUser } from "lucide-react";
+import { CircleUser, FileScan } from "lucide-react";
 import TagInput from "./TagInput";
 import { Separator } from "../ui/separator";
 import { skillsOptions } from "@/utils/index";
 import ExperienceInput from "./ExperienceInput";
 import { ToastNotification } from "../ToastNotification";
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
+const ProfileForm: React.FC<UserProps> = ({ user }) => {
   const [profile, setProfile] = useState({
     displayName: user.displayName || "",
     email: user.email || "",
@@ -75,10 +75,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           </div>
         </TabsTrigger>
         <Separator className="my-4 " />
-        <TabsTrigger value="password">
+        <TabsTrigger value="resume">
           <div className="flex items-center gap-2">
-            <CircleUser />
-            Password
+            <FileScan />
+            Resume
           </div>
         </TabsTrigger>
       </TabsList>

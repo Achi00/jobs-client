@@ -6,23 +6,8 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Experience, ExperienceInputProps } from "@/types";
 import { Separator } from "../ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import {
-  BriefcaseIcon,
-  Building2,
-  BuildingIcon,
-  CalendarIcon,
-  Captions,
-  Hourglass,
-  XIcon,
-} from "lucide-react";
+import { Card } from "../ui/card";
+import { BriefcaseIcon, BuildingIcon, CalendarIcon, XIcon } from "lucide-react";
 
 const ExperienceInput: React.FC<ExperienceInputProps> = ({
   experiences,
@@ -38,10 +23,29 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setCurrentExperience({
-      ...currentExperience,
-      [name]: value,
-    });
+    if (name === "duration") {
+      // Allow only numeric input
+      const numericValue = value.replace(/\D/g, "");
+
+      // Automatically format to YYYY-YYYY
+      let formattedValue = numericValue;
+      if (numericValue.length > 4) {
+        formattedValue = `${numericValue.slice(0, 4)}-${numericValue.slice(
+          4,
+          8
+        )}`;
+      }
+
+      setCurrentExperience({
+        ...currentExperience,
+        [name]: formattedValue,
+      });
+    } else {
+      setCurrentExperience({
+        ...currentExperience,
+        [name]: value,
+      });
+    }
   };
 
   const handleAddExperience = () => {
@@ -67,7 +71,7 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({
       <Separator />
       <div className="flex flex-wrap">
         {experiences.map((exp, index) => (
-          <div className="p-3">
+          <div key={index} className="p-3">
             <Card className="w-[280px] max-w-md p-6 grid gap-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -103,6 +107,7 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({
       <div className="mb-4 pt-4">
         <Label htmlFor="title">Title</Label>
         <Input
+          autoComplete="off"
           type="text"
           id="title"
           name="title"
@@ -114,23 +119,25 @@ const ExperienceInput: React.FC<ExperienceInputProps> = ({
       <div className="mb-4">
         <Label htmlFor="company">Company</Label>
         <Input
+          autoComplete="off"
           type="text"
           id="company"
           name="company"
           value={currentExperience.company}
           onChange={handleChange}
-          placeholder="Company"
+          placeholder="Company Name"
         />
       </div>
       <div className="mb-4">
         <Label htmlFor="duration">Duration</Label>
         <Input
+          autoComplete="off"
           type="text"
           id="duration"
           name="duration"
           value={currentExperience.duration}
           onChange={handleChange}
-          placeholder="Duration (e.g., 2019-2021)"
+          placeholder="(e.g., 2012-2015)"
         />
       </div>
       <Button type="button" onClick={handleAddExperience}>
