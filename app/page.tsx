@@ -1,280 +1,233 @@
-import { cookies } from "next/headers";
-import { AlertCircle, MountainIcon } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "postcss";
 import Link from "next/link";
-import JobsCard from "@/components/jobs/JobsCard";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
-export default function Home({
-  params,
-  searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  console.log(searchParams.alert);
+export default function JobBoardLanding() {
+  const featuredJobs = [
+    {
+      id: 1,
+      title: "Full-Stack Engineer III",
+      company: "Hinge",
+      location: "New York, NY",
+      salary: "$143K - $172K",
+      type: "Full-time",
+    },
+    {
+      id: 2,
+      title: "Frontend Developer",
+      company: "Airbnb",
+      location: "San Francisco, CA",
+      salary: "$120K - $160K",
+      type: "Contract",
+    },
+    {
+      id: 3,
+      title: "Data Scientist",
+      company: "Stripe",
+      location: "Remote",
+      salary: "$130K - $180K",
+      type: "Full-time",
+    },
+  ];
+
   return (
-    <div>
-      <div className="flex flex-col min-h-[100dvh]">
-        <main className="flex-1 items-center justify-center">
-          <div className="flex w-full items-center justify-center pt-10">
-            {searchParams.alert === "autherror" && (
-              <Alert className="w-1/4" variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>
-                  You need to be logged in to access this page
-                </AlertDescription>
-              </Alert>
-            )}
+    <div className="flex flex-col min-h-[100dvh]">
+      <main className="flex-1">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center text-center space-y-4">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+                Find Your Dream Tech Job
+              </h1>
+              <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+                Discover opportunities at top tech companies worldwide
+              </p>
+              <div className="w-full space-y-2">
+                <Button
+                  variant="outline"
+                  className="text-xl w-1/4 font-semibold"
+                >
+                  <Link href="/jobs">Find Jobs</Link>
+                </Button>
+              </div>
+            </div>
           </div>
-          <section className="w-full py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
-              <div className="grid gap-6 lg:grid-cols-[1fr_600px] lg:gap-12 xl:grid-cols-[1fr_800px]">
-                <img
-                  src="/placeholder.svg"
-                  width="1200"
-                  height="400"
-                  alt="Hero"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-                />
-                <div className="flex flex-col justify-center space-y-4">
-                  <div className="space-y-2">
-                    <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                      48-Hour Flash Sale
-                    </h1>
-                    <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                      Enjoy exclusive savings for 48 hours only. Limited stock.
-                      Limited time. Don't miss out.
+        </section>
+
+        <section className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter mb-8 text-center">
+              Featured Jobs
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {featuredJobs.map((job) => (
+                <Card key={job.id}>
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold mb-2">{job.title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                      {job.company}
                     </p>
-                  </div>
-                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                    <Link
-                      href="#"
-                      className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                      prefetch={false}
-                    >
-                      Shop Now
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section className="w-full">
-            <div className="mx-auto grid items-center">
-              <JobsCard limit={3} />
-              {/* <Card>
-                  <CardContent className="p-4 lg:p-6">
-                    <div className="grid gap-2">
-                      <h3 className="text-base font-semibold">
-                        Product Title Placeholder
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Description of the product and its features. This is a
-                        placeholder text that can be replaced.
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="font-semibold">Now only</div>
-                        <div className="font-bold">$19.99</div>
-                      </div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <MapPinIcon className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm">{job.location}</span>
                     </div>
+                    <p className="font-semibold mb-4">{job.salary}</p>
+                    <Badge>{job.type}</Badge>
                   </CardContent>
-                  <CardFooter className="p-4 lg:p-6">
-                    <Button variant="outline" className="w-full">
-                      Shop Now
-                    </Button>
+                  <CardFooter className="p-6 pt-0">
+                    <Button className="w-full">View Job</Button>
                   </CardFooter>
                 </Card>
-                <Card>
-                  <CardContent className="p-4 lg:p-6">
-                    <div className="grid gap-2">
-                      <h3 className="text-base font-semibold">
-                        Product Title Placeholder
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Description of the product and its features. This is a
-                        placeholder text that can be replaced.
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="font-semibold">Now only</div>
-                        <div className="font-bold">$19.99</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="p-4 lg:p-6">
-                    <Button variant="outline" className="w-full">
-                      Shop Now
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Card>
-                  <CardContent className="p-4 lg:p-6">
-                    <div className="grid gap-2">
-                      <h3 className="text-base font-semibold">
-                        Product Title Placeholder
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Description of the product and its features. This is a
-                        placeholder text that can be replaced.
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="font-semibold">Now only</div>
-                        <div className="font-bold">$19.99</div>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="p-4 lg:p-6">
-                    <Button variant="outline" className="w-full">
-                      Shop Now
-                    </Button>
-                  </CardFooter>
-                </Card> */}
+              ))}
             </div>
-          </section>
-          <section className="w-full py-12 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
-              <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                <div className="space-y-2">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                    Amazing Products. Happy Customers.
-                  </h2>
-                  <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                    &quot;The products are fantastic. I love shopping
-                    here!&quot; - Happy Customer
-                  </p>
-                </div>
-              </div>
-              <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-                <img
-                  src="/placeholder.svg"
-                  width="150"
-                  height="150"
-                  alt="User"
-                  className="mx-auto rounded-full aspect-square object-cover object-center lg:order-last"
-                />
-                <div className="flex flex-col justify-center space-y-4">
-                  <ul className="grid gap-6">
-                    <li>
-                      <div className="grid gap-1">
-                        <h3 className="text-lg font-bold">Collaboration</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Make collaboration seamless with built-in code review
-                          tools.
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="grid gap-1">
-                        <h3 className="text-lg font-bold">Automation</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Automate your workflow with continuous integration.
-                        </p>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="grid gap-1">
-                        <h3 className="text-lg font-bold">Scale</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Deploy to the cloud with a single click and scale with
-                          ease.
-                        </p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div className="mt-12 text-center">
+              <Button variant="outline" asChild>
+                <Link href="/jobs">View All Jobs</Link>
+              </Button>
             </div>
-          </section>
-          <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-            <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-              <div className="space-y-3">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                  Experience the workflow the best frontend teams love.
+          </div>
+        </section>
+
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-50 dark:bg-gray-800">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-10 sm:px-10 md:gap-16 md:grid-cols-2 items-center">
+              <div className="space-y-4">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                  For Job Seekers
                 </h2>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Let your team focus on shipping features instead of managing
-                  infrastructure with automated CI/CD.
-                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                    Access thousands of tech job listings
+                  </li>
+                  <li className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                    Create a professional profile
+                  </li>
+                  <li className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                    Get matched with relevant opportunities
+                  </li>
+                </ul>
+                <Button asChild>
+                  <Link href="/signup">Create Your Profile</Link>
+                </Button>
               </div>
-              <div className="mx-auto w-full max-w-sm space-y-2">
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Sign up to get notified when we launch.
-                  <Link
-                    href="#"
-                    className="underline underline-offset-2"
-                    prefetch={false}
-                  >
-                    Terms &amp; Conditions
-                  </Link>
-                </p>
-              </div>
-            </div>
-          </section>
-          <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-            <div className="container px-4 md:px-6">
-              <div className="grid gap-10 sm:px-10 md:gap-16 md:grid-cols-2">
-                <div className="space-y-4">
-                  <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                    Performance
-                  </div>
-                  <h2 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
-                    Traffic spikes should be exciting, not scary.
-                  </h2>
-                  <Link
-                    href="#"
-                    className="inline-flex h-9 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-300"
-                    prefetch={false}
-                  >
-                    Get Started
-                  </Link>
-                </div>
-                <div className="flex flex-col items-start space-y-4">
-                  <div className="inline-block rounded-lg bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">
-                    Security
-                  </div>
-                  <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed dark:text-gray-400">
-                    Fully managed infrastructure designed to scale dynamically
-                    with your traffic, a global edge to ensure your site is fast
-                    for every customer, and the tools to monitor every aspect of
-                    your app.
-                  </p>
-                  <Link
-                    href="#"
-                    className="inline-flex h-9 items-center justify-center rounded-md border border-gray-200 border-gray-200 bg-white px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-300"
-                    prefetch={false}
-                  >
-                    Contact Sales
-                  </Link>
-                </div>
+              <div className="space-y-4">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                  For Employers
+                </h2>
+                <ul className="space-y-2">
+                  <li className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                    Post job listings to reach top talent
+                  </li>
+                  <li className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                    Browse candidate profiles
+                  </li>
+                  <li className="flex items-center">
+                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
+                    Streamline your hiring process
+                  </li>
+                </ul>
+                <Button variant="outline" asChild>
+                  <Link href="/employers">Start Hiring</Link>
+                </Button>
               </div>
             </div>
-          </section>
-        </main>
-        <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            &copy; 2024, Portfolio project
-          </p>
-          <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-            <Link
-              href="#"
-              className="text-xs hover:underline underline-offset-4"
-              prefetch={false}
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="#"
-              className="text-xs hover:underline underline-offset-4"
-              prefetch={false}
-            >
-              Privacy
-            </Link>
-          </nav>
-        </footer>
-      </div>
+          </div>
+        </section>
+      </main>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          &copy; 2024 TechJobBoard. All rights reserved.
+        </p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link
+            href="#"
+            className="text-xs hover:underline underline-offset-4"
+            prefetch={false}
+          >
+            Terms of Service
+          </Link>
+          <Link
+            href="#"
+            className="text-xs hover:underline underline-offset-4"
+            prefetch={false}
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href="#"
+            className="text-xs hover:underline underline-offset-4"
+            prefetch={false}
+          >
+            Contact Us
+          </Link>
+        </nav>
+      </footer>
     </div>
+  );
+}
+
+function BriefcaseIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+  );
+}
+
+function MapPinIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function CheckIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
   );
 }
