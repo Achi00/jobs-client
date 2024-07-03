@@ -71,9 +71,13 @@ const JobsCard = ({ jobs }: JobsDataProps) => {
                     Not Specified
                   </Badge>
                 )}
-                {job.salary && (
+                {job.salary ? (
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     {job.salary}
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    Not Specified
                   </div>
                 )}
               </CardContent>
@@ -83,12 +87,11 @@ const JobsCard = ({ jobs }: JobsDataProps) => {
                   variant="outline"
                   className="w-full flex items-center gap-2"
                 >
-                  {/* <ArrowUpRight size={16} /> */}
                   <Linkedin className="w-7 h-7" />
                   <Link href={job.applyLink}>Apply Now</Link>
                 </Button>
                 <Button size="sm" className="w-full border-2">
-                  <Link href={job.applyLink}>View Details</Link>
+                  <Link href={`/details/${job._id}`}>View Details</Link>
                 </Button>
               </CardFooter>
             </Card>
