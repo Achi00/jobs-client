@@ -88,7 +88,14 @@ const JobsCard = ({ jobs }: JobsDataProps) => {
                   className="w-full flex items-center gap-2"
                 >
                   <Linkedin className="w-7 h-7" />
-                  <Link href={job.applyLink}>Apply Now</Link>
+                  <a
+                    target="_blank"
+                    className="font-semibold"
+                    href={job.applyLink}
+                    rel="noopener noreferrer"
+                  >
+                    Apply Now
+                  </a>
                 </Button>
                 <Button size="sm" className="w-full border-2">
                   <Link href={`/details/${job._id}`}>View Details</Link>

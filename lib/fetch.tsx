@@ -28,10 +28,13 @@ export async function fetchUserData(cookie: string): Promise<User | null> {
   }
 }
 
-export async function fetchAllJobs() {
+export async function fetchJobs({ page = 1, limit = 20 } = {}) {
   try {
-    const res = await axios.get(`${API_BASE_URL}/jobs/getjobs`);
-    if (!res.data) {
+    const res = await axios.get(`${API_BASE_URL}/jobs/getjobs`, {
+      params: { page, limit },
+    });
+
+    if (!res.data || !res.data.jobs) {
       throw new Error("No jobs found");
     }
 

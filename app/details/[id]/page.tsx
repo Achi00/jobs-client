@@ -1,17 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { fetchJobsWithID } from "@/lib/fetch";
 import {
-  Banknote,
   BriefcaseBusiness,
   Building2,
-  Check,
   DollarSign,
   Dot,
-  Linkedin,
   LocateFixed,
   MapPin,
 } from "lucide-react";
-import Link from "next/link";
 import React from "react";
 
 const page = async ({ params }: { params: { id: string } }) => {
@@ -77,11 +73,15 @@ const page = async ({ params }: { params: { id: string } }) => {
             variant="outline"
             className="w-40 flex  justify-start items-center gap-2"
           >
-            {/* <Linkedin className="w-5 h-5" /> */}
             <LinkedinIcon className="w-8 h-8" />
-            <Link className="font-semibold" href={job.applyLink}>
+            <a
+              target="_blank"
+              className="font-semibold"
+              href={job.applyLink}
+              rel="noopener noreferrer"
+            >
               Apply Now
-            </Link>
+            </a>
           </Button>
         </div>
       </div>

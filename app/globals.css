@@ -35,3 +35,13 @@
     --radius: 0.5rem;
   }
 }
+
+.gradient {
+  background: rgb(93, 0, 66);
+  background: linear-gradient(
+    90deg,
+    rgba(93, 0, 66, 1) 0%,
+    rgba(28, 28, 126, 1) 49%,
+    rgba(0, 73, 88, 1) 100%
+  );
+}

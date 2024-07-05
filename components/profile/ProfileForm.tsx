@@ -65,6 +65,8 @@ const ProfileForm: React.FC<UserProps> = ({ user }) => {
     }
   };
 
+  if (!user) return;
+
   return (
     <Tabs defaultValue="account" className="w-full flex p-5">
       <TabsList className="flex flex-col w-44">

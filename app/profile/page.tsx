@@ -1,6 +1,4 @@
-import axios from "axios";
 import { cookies } from "next/headers";
-import { User } from "@/types";
 import ProfileForm from "@/components/profile/ProfileForm";
 import { fetchUserData } from "@/lib/fetch";
 import { redirect } from "next/navigation";
@@ -16,11 +14,9 @@ export default async function ProfilePage({
   const cookie = cookieStore.get("connect.sid")?.value || "";
   const user = await fetchUserData(cookie);
 
-  console.log(searchParams);
-
-  // if (!user) {
-  //   redirect("/");
-  // }
+  if (!user) {
+    redirect("/");
+  }
 
   return (
     <div className="w-full h-screen p-7">

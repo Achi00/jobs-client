@@ -1,42 +1,75 @@
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import {
+  AlertCircle,
+  CircleUserRound,
+  PencilRuler,
+  UserCheck,
+} from "lucide-react";
+import FixedJobCard from "@/components/jobs/FixedJobCard";
+import JobsList from "@/components/jobs/JobsList";
+import { fetchUserData } from "@/lib/fetch";
+import { cookies } from "next/headers";
 
-export default function JobBoardLanding() {
-  const featuredJobs = [
-    {
-      id: 1,
-      title: "Full-Stack Engineer III",
-      company: "Hinge",
-      location: "New York, NY",
-      salary: "$143K - $172K",
-      type: "Full-time",
-    },
-    {
-      id: 2,
-      title: "Frontend Developer",
-      company: "Airbnb",
-      location: "San Francisco, CA",
-      salary: "$120K - $160K",
-      type: "Contract",
-    },
-    {
-      id: 3,
-      title: "Data Scientist",
-      company: "Stripe",
-      location: "Remote",
-      salary: "$130K - $180K",
-      type: "Full-time",
-    },
-  ];
-
+export default async function JobBoardLanding({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const cookieStore = cookies();
+  const cookie = cookieStore.get("connect.sid")?.value || "";
+  const user = await fetchUserData(cookie);
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <section className="w-full py-12 md:py-16 lg:py-22 bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
+          <div className="flex w-full justify-center pb-20">
+            {searchParams.alert === "autherror" && (
+              <Alert className="w-1/4" variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  You need to be logged in to access this page
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
           <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_600px] lg:gap-12 xl:grid-cols-[1fr_800px]">
+              <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2">
+                  <h1 className="text-3xl border-b border-gray-300 pb-2 font-bold tracking-tighter sm:text-5xl">
+                    Leading Tech Jobs
+                  </h1>
+                  <br />
+                  <div className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 flex flex-col gap-1">
+                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                      Find Your Dream Tech Jobs
+                    </h3>
+                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                      Discover opportunities at top tech companies worldwide
+                    </h4>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Link
+                    href="/jobs"
+                    className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                    prefetch={false}
+                  >
+                    Find Jobs
+                  </Link>
+                </div>
+              </div>
+              <div className="gradient w-full max-w-3xl mx-auto rounded-lg flex items-center justify-center p-4">
+                <FixedJobCard />
+              </div>
+            </div>
+          </div>
+          <div className="container px-4 pt-20 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
                 Find Your Dream Tech Job
@@ -61,26 +94,8 @@ export default function JobBoardLanding() {
             <h2 className="text-3xl font-bold tracking-tighter mb-8 text-center">
               Featured Jobs
             </h2>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {featuredJobs.map((job) => (
-                <Card key={job.id}>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-2">{job.title}</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                      {job.company}
-                    </p>
-                    <div className="flex items-center gap-2 mb-4">
-                      <MapPinIcon className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm">{job.location}</span>
-                    </div>
-                    <p className="font-semibold mb-4">{job.salary}</p>
-                    <Badge>{job.type}</Badge>
-                  </CardContent>
-                  <CardFooter className="p-6 pt-0">
-                    <Button className="w-full">View Job</Button>
-                  </CardFooter>
-                </Card>
-              ))}
+            <div className="w-full">
+              <JobsList limit={3} />
             </div>
             <div className="mt-12 text-center">
               <Button variant="outline" asChild>
@@ -90,52 +105,70 @@ export default function JobBoardLanding() {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-blue-50 dark:bg-gray-800">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-10 sm:px-10 md:gap-16 md:grid-cols-2 items-center">
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  For Job Seekers
+            <div className="flex flex-col items-center justify-center space-y-4 text-center z-10 relative">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter text-foreground sm:text-5xl">
+                  Customize Your Profile
                 </h2>
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
-                    Access thousands of tech job listings
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
-                    Create a professional profile
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
-                    Get matched with relevant opportunities
-                  </li>
-                </ul>
-                <Button asChild>
-                  <Link href="/signup">Create Your Profile</Link>
-                </Button>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Tailor your profile to match your skills and preferences, and
+                  get personalized job recommendations.
+                </p>
               </div>
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  For Employers
-                </h2>
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
-                    Post job listings to reach top talent
+            </div>
+
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12 ">
+              <div className="relative w-full">
+                <div className="absolute top-0 left-0 w-32 h-32 bg-gray-200 rounded-full"></div>
+                <div className="absolute top-1/4 right-0 w-48 h-48 bg-gray-100 rounded-full"></div>
+                <div className="absolute bottom-0 left-1/4 w-24 h-24 bg-gray-200 rounded-full "></div>
+                <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-gray-200 rounded-full"></div>
+                <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-gray-100 rounded-full "></div>
+                <div className="flex relative z-10 justify-between items-center">
+                  <PencilRuler size={55} />
+                  <div className="flex-grow border-b-2 border-dotted border-gray-500 mx-2" />
+                  <CircleUserRound size={55} />
+                  <div className="flex-grow border-b-2 border-dotted border-gray-500 mx-2" />
+                  <UserCheck size={55} />
+                </div>
+              </div>
+              <div className="flex flex-col justify-center space-y-4 z-10">
+                <ul className="grid gap-6">
+                  <li>
+                    <div className="grid gap-1">
+                      <div className="text-xl text-muted-foreground">
+                        Personalize your{" "}
+                        <Link
+                          href="/profile"
+                          className="border-b border-gray-500 hover:text-blue-600"
+                        >
+                          profile
+                        </Link>
+                        {!user && (
+                          <p className="text-xl text-muted-foreground">
+                            This requires authentication
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
-                    Browse candidate profiles
+                  <li>
+                    <div className="grid gap-1">
+                      <p className="text-xl text-muted-foreground">
+                        Set your tech skills & experience
+                      </p>
+                    </div>
                   </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2" />
-                    Streamline your hiring process
+                  <li>
+                    <div className="grid gap-1">
+                      <p className="text-xl text-muted-foreground">
+                        Get more suitable job recommendations
+                      </p>
+                    </div>
                   </li>
                 </ul>
-                <Button variant="outline" asChild>
-                  <Link href="/employers">Start Hiring</Link>
-                </Button>
               </div>
             </div>
           </div>
@@ -143,7 +176,7 @@ export default function JobBoardLanding() {
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          &copy; 2024 TechJobBoard. All rights reserved.
+          &copy; 2024 Tech Job. All rights reserved.
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link
@@ -170,64 +203,5 @@ export default function JobBoardLanding() {
         </nav>
       </footer>
     </div>
-  );
-}
-
-function BriefcaseIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
-      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-    </svg>
-  );
-}
-
-function MapPinIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-}
-
-function CheckIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
   );
 }

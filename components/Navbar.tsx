@@ -8,13 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
 import { UserProps } from "@/types";
-import { CircleUserRound, GanttChart, LogOut, User } from "lucide-react";
+import { BriefcaseIcon, LogOut, User } from "lucide-react";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 const Navbar = ({ user }: UserProps) => {
   const [position, setPosition] = useState("bottom");
@@ -22,9 +21,13 @@ const Navbar = ({ user }: UserProps) => {
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-14 items-center">
-          <Link href="/" className="flex items-center" prefetch={false}>
-            <GanttChart className="h-6 w-6" />
-            <span className="sr-only">Jobs</span>
+          <Link
+            href="/"
+            className="flex items-center justify-center"
+            prefetch={false}
+          >
+            <BriefcaseIcon className="h-6 w-6" />
+            <span className="ml-2 text-xl font-bold">Tech Job</span>
           </Link>
           <nav className="hidden md:flex gap-4">
             <Link
@@ -72,7 +75,15 @@ const Navbar = ({ user }: UserProps) => {
                   >
                     <DropdownMenuItem>
                       <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
+                      <span>
+                        {" "}
+                        <Link
+                          href="/profile"
+                          className="font-medium flex items-center text-sm transition-colors hover:underline"
+                        >
+                          Profile
+                        </Link>
+                      </span>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>

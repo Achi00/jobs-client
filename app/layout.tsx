@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import { Toaster } from "sonner";
 import { cookies } from "next/headers";
 import { fetchUserData } from "@/lib/fetch";
-import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,10 +28,6 @@ export default async function RootLayout({
     user = await fetchUserData(cookie);
   }
 
-  // Redirect to home if unauthenticated and not already on home page
-  // if (!user && searchParams?.alert !== "login") {
-  //   redirect("/login");
-  // }
   return (
     <html lang="en">
       <body className={inter.className}>

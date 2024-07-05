@@ -1,12 +1,16 @@
 import JobsList from "@/components/jobs/JobsList";
 import React from "react";
 
-const page = () => {
+const JobsPage = ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
   return (
     <div>
-      <JobsList />
+      <JobsList searchParams={searchParams} />
     </div>
   );
 };
 
-export default page;
+export default JobsPage;
