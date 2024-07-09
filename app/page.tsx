@@ -147,7 +147,7 @@ export default async function JobBoardLanding({
                           profile
                         </Link>
                         {!user && (
-                          <p className="text-xl text-muted-foreground">
+                          <p className="text-sm text-muted-foreground text-red-600">
                             This requires authentication
                           </p>
                         )}

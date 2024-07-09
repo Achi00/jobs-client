@@ -17,6 +17,8 @@ import ExperienceInput from "./ExperienceInput";
 import { ToastNotification } from "../ToastNotification";
 
 const ProfileForm: React.FC<UserProps> = ({ user }) => {
+  if (!user) return;
+
   const [profile, setProfile] = useState({
     displayName: user.displayName || "",
     email: user.email || "",
