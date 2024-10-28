@@ -89,22 +89,22 @@ const JobsCard = ({ jobs, type, user }: JobsDataProps) => {
                   </div>
                 </CardContent>
                 <CardFooter className="mt-auto flex flex-wrap gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full flex items-center gap-2"
+                  <a
+                    target="_blank"
+                    className="font-semibold flex w-full items-center gap-1"
+                    href={job.applyLink}
+                    rel="noopener noreferrer"
                   >
-                    <Linkedin className="w-7 h-7" />
-                    <a
-                      target="_blank"
-                      className="font-semibold flex items-center gap-1"
-                      href={job.applyLink}
-                      rel="noopener noreferrer"
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full flex items-center gap-2"
                     >
+                      <Linkedin className="w-7 h-7" />
                       Apply Now
                       <SquareArrowOutUpRight className="w-3 h-3" />
-                    </a>
-                  </Button>
+                    </Button>
+                  </a>
                   <Button asChild size="sm" className="w-full border-2">
                     <Link href={`/details/${job._id}`}>View Details</Link>
                   </Button>

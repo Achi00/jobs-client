@@ -14,9 +14,25 @@ import {
 import { UserProps } from "@/types";
 import { BriefcaseIcon, LogOut, User } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
+import { useRouter } from "next/navigation";
 
 const Navbar = ({ user }: UserProps) => {
   const [position, setPosition] = useState("bottom");
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const router = useRouter();
+  const handleLogOut = async () => {
+    try {
+      const response = await fetch("/api/logout");
+      if (response.ok) {
+        setIsLoggedOut(true);
+        router.push("/");
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full max-w-7xl mx-auto px-4">
@@ -37,7 +53,7 @@ const Navbar = ({ user }: UserProps) => {
             >
               Home
             </Link>
-            {user && (
+            {user && !isLoggedOut && (
               <Link
                 href="/profile"
                 className="flex items-center transition-colors hover:underline"
@@ -54,7 +70,7 @@ const Navbar = ({ user }: UserProps) => {
               Jobs
             </Link>
           </nav>
-          {user ? (
+          {user && !isLoggedOut ? (
             <div className="flex items-center p-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -89,10 +105,10 @@ const Navbar = ({ user }: UserProps) => {
                     </DropdownMenuItem>
 
                     <DropdownMenuItem>
-                      {/* <Button variant="ghost"> */}
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log Out
-                      {/* </Button> */}
+                      <Button onClick={handleLogOut} variant="ghost">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log Out
+                      </Button>
                     </DropdownMenuItem>
                   </DropdownMenuRadioGroup>
                 </DropdownMenuContent>

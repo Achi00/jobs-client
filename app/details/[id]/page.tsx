@@ -49,22 +49,22 @@ const page = async ({ params }: { params: { id: string } }) => {
             ))}
         </div>
         <div className="pt-1">
-          <Button
-            size="sm"
-            variant="outline"
-            className="w-40 flex  justify-start items-center gap-2"
+          <a
+            target="_blank"
+            className="font-semibold flex items-center gap-1"
+            href={job.applyLink}
+            rel="noopener noreferrer"
           >
-            <LinkedinIcon className="w-8 h-8" />
-            <a
-              target="_blank"
-              className="font-semibold flex items-center gap-1"
-              href={job.applyLink}
-              rel="noopener noreferrer"
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-40 flex  justify-start items-center gap-2"
             >
+              <LinkedinIcon className="w-8 h-8" />
               Apply Now
               <SquareArrowOutUpRight className="w-3 h-3" />
-            </a>
-          </Button>
+            </Button>
+          </a>
         </div>
       </div>
 
