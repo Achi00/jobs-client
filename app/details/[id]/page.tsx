@@ -1,22 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { fetchJobsWithID } from "@/lib/fetch";
 import {
-  BriefcaseBusiness,
-  Building2,
-  DollarSign,
+  BookOpenText,
   Dot,
-  LocateFixed,
+  FolderKanban,
   MapPin,
+  NotepadText,
+  SquareArrowOutUpRight,
 } from "lucide-react";
 import React from "react";
 
 const page = async ({ params }: { params: { id: string } }) => {
   const id = params.id;
-  console.log(id);
   const job = await fetchJobsWithID(id);
-  const jobInfoBullets = job.jobInfo
-    .split("\n")
-    .filter((item: string) => item.trim() !== "");
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex items-center gap-4 mb-6">
@@ -34,38 +31,22 @@ const page = async ({ params }: { params: { id: string } }) => {
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <BriefcaseBusiness size={22} />
-            <h2 className="text-lg font-semibold">Job Type</h2>
-          </div>
-          <p>{job.jobType}</p>
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <LocateFixed size={22} />
-            <h2 className="text-lg font-semibold">Location Type</h2>
-          </div>
-          <p>{job.locationType}</p>
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
             <MapPin size={22} />
             <h2 className="text-lg font-semibold">Location</h2>
           </div>
           <p>{job.location}</p>
         </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <DollarSign size={22} />
-            <h2 className="text-lg font-semibold">Salary</h2>
-          </div>
-          <p>{job.salary}</p>
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <Building2 size={22} />
-            <h2 className="text-lg font-semibold">Company Size</h2>
-          </div>
-          <p>{job.employees}</p>
+        <div className="flex flex-col items-start gap-2 text-sm">
+          {job.jobDetailPreferences
+            .split(",")
+            .map((preference: string, index: number) => (
+              <span
+                key={index}
+                className="px-2 py-1 text-sm bg-gray-100 text-black  rounded-full font-semibold"
+              >
+                {preference.trim()}
+              </span>
+            ))}
         </div>
         <div className="pt-1">
           <Button
@@ -76,33 +57,55 @@ const page = async ({ params }: { params: { id: string } }) => {
             <LinkedinIcon className="w-8 h-8" />
             <a
               target="_blank"
-              className="font-semibold"
+              className="font-semibold flex items-center gap-1"
               href={job.applyLink}
               rel="noopener noreferrer"
             >
               Apply Now
+              <SquareArrowOutUpRight className="w-3 h-3" />
             </a>
           </Button>
         </div>
       </div>
 
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2">Job Information</h2>
+        <h2 className="flex items-center gap-2 text-2xl font-semibold mb-2">
+          <BookOpenText />
+          General Information
+        </h2>
+        <div className="flex py-4 pb-8 items-center font-semibold gap-1 border-t border-gray-400  pl-8">
+          {job.knowledge.length != 0
+            ? job.knowledge
+            : "No Additional Info Available"}
+        </div>
+        {/* </ul> */}
+        <h2 className="flex items-center gap-2 text-2xl font-semibold mb-2">
+          <FolderKanban />
+          Experience
+        </h2>
         <ul className="list-disc pl-5 border-gray-400 border-t pb-4">
-          {jobInfoBullets.map((bullet: string, index: number) => (
-            <li key={index} className="flex pt-4 items-center gap-1">
-              <Dot size={28} />
-              {bullet}
-            </li>
-          ))}
+          {job.experiences.lenght != 0
+            ? job.experiences.map((exp: string, index: number) => (
+                <li
+                  key={index}
+                  className="flex pt-4 items-center font-semibold gap-1"
+                >
+                  <Dot size={28} />
+                  {exp}
+                </li>
+              ))
+            : "No Experience Available"}
         </ul>
       </div>
 
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2">Job Description</h2>
+        <h2 className="flex items-center gap-2 text-2xl font-semibold mb-2">
+          <NotepadText />
+          About the job
+        </h2>
         <div
           dangerouslySetInnerHTML={{ __html: job.descriptionHTML }}
-          className="prose max-w-none border-t border-gray-400 py-5"
+          className="leading-7 [&:not(:first-child)]:mt-6 font-semibold  border-t border-gray-400 pt-3  pl-8"
         />
       </div>
     </div>

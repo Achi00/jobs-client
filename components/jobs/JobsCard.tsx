@@ -9,100 +9,113 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { JobsDataProps } from "@/types";
-import { ArrowUpRight } from "lucide-react";
+import {
+  Globe,
+  Lightbulb,
+  SearchCheck,
+  SquareArrowOutUpRight,
+} from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { SearchBox } from "./SearchBox";
+import NoJobs from "./NoJobs";
 
-const JobsCard = ({ jobs }: JobsDataProps) => {
+const JobsCard = ({ jobs, type, user }: JobsDataProps) => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col">
       <main className="flex bg-gray-100/40 flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10 dark:bg-gray-800/40">
-        <div className="max-w-6xl w-full mx-auto flex items-center gap-4">
-          <form className="flex-1">
-            <Input
-              placeholder="Search jobs..."
-              className="bg-white dark:bg-gray-950"
-            />
-            <Button type="submit" className="sr-only">
-              Submit
-            </Button>
-          </form>
+        <div className="w-full mx-auto flex flex-col items-center gap-4">
+          <div className="relative">
+            {type === "featured" && user && (
+              <Alert>
+                <SearchCheck className="h-4 w-4" />
+                <AlertTitle>Featured Jobs</AlertTitle>
+                <AlertDescription>
+                  You are seeing jobs which are chosen based on your profile
+                </AlertDescription>
+              </Alert>
+            )}
+            {type === "featured" && !user && (
+              <Alert>
+                <Lightbulb className="h-4 w-4" />
+                <AlertTitle>Featured Jobs</AlertTitle>
+                <AlertDescription>
+                  Featured jobs filter won't work same if you are not
+                  authenticated!
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
+          {type != "featured" && <SearchBox />}
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl w-full mx-auto">
-          {jobs?.map((job, index) => (
-            <Card key={index} className="flex flex-col">
-              <CardHeader className="flex flex-row items-center gap-4">
-                <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full overflow-hidden">
-                  <img
-                    src={job.companyLogo}
-                    alt={`${job.company} logo`}
-                    className="w-8 h-8 object-contain"
-                  />
-                </div>
-                <div className="flex flex-col justify-between h-20">
-                  <CardTitle className="text-lg font-semibold">
-                    {job.jobTitle}
-                  </CardTitle>
-                  <CardDescription className="text-sm truncate">
-                    {job.company}
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-2 flex-grow">
-                <div className="text-sm font-semibold">{`${job.jobType}, ${job.locationType}`}</div>
-                <div className="flex items-center gap-2 text-sm">
-                  <LocateIcon className="w-4 h-4" />
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {job.location}
-                  </span>
-                </div>
-                {job.employees ? (
-                  <Badge
-                    variant="secondary"
-                    className="w-fit hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
-                  >
-                    {job.employees}
-                  </Badge>
-                ) : (
-                  <Badge
-                    variant="secondary"
-                    className="w-fit hover:bg-gray-100/50 dark:hover:bg-gray-800/50"
-                  >
-                    Not Specified
-                  </Badge>
-                )}
-                {job.salary ? (
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {job.salary}
+          {jobs.length > 0 ? (
+            jobs?.map((job, index) => (
+              <Card key={index} className="flex flex-col">
+                <CardHeader className="flex flex-row items-center gap-4">
+                  <div className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-full overflow-hidden">
+                    <img
+                      src={job.companyLogo}
+                      alt={`${job.company} logo`}
+                      className="w-8 h-8 object-contain"
+                    />
                   </div>
-                ) : (
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Not Specified
+                  <div className="flex flex-col">
+                    <CardTitle className="text-lg font-semibold">
+                      {job.jobTitle}
+                    </CardTitle>
+                    <CardDescription className="text-sm truncate">
+                      {job.company}
+                    </CardDescription>
                   </div>
-                )}
-              </CardContent>
-              <CardFooter className="mt-auto flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="w-full flex items-center gap-2"
-                >
-                  <Linkedin className="w-7 h-7" />
-                  <a
-                    target="_blank"
-                    className="font-semibold"
-                    href={job.applyLink}
-                    rel="noopener noreferrer"
+                </CardHeader>
+                <CardContent className="grid gap-2 flex-grow">
+                  {/* <div className="text-sm font-semibold">{job.location}</div> */}
+                  <div className="flex items-center gap-2 text-sm">
+                    <Globe className="w-4 h-4" />
+                    <span className="text-gray-500 ">{job.location}</span>
+                  </div>
+                  <div className="flex flex-wrap items-start gap-2 text-sm">
+                    {job.jobDetailPreferences
+                      .split(",")
+                      .map((preference, prefIndex) => (
+                        <span
+                          key={prefIndex}
+                          className="px-2 py-1 text-sm bg-gray-100 text-black  rounded-full font-semibold"
+                        >
+                          {preference.trim()}
+                        </span>
+                      ))}
+                  </div>
+                </CardContent>
+                <CardFooter className="mt-auto flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full flex items-center gap-2"
                   >
-                    Apply Now
-                  </a>
-                </Button>
-                <Button size="sm" className="w-full border-2">
-                  <Link href={`/details/${job._id}`}>View Details</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                    <Linkedin className="w-7 h-7" />
+                    <a
+                      target="_blank"
+                      className="font-semibold flex items-center gap-1"
+                      href={job.applyLink}
+                      rel="noopener noreferrer"
+                    >
+                      Apply Now
+                      <SquareArrowOutUpRight className="w-3 h-3" />
+                    </a>
+                  </Button>
+                  <Button asChild size="sm" className="w-full border-2">
+                    <Link href={`/details/${job._id}`}>View Details</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))
+          ) : (
+            <div className="absolute left-0 w-full flex items-center justify-center ">
+              <NoJobs />
+            </div>
+          )}
         </div>
       </main>
     </div>
@@ -110,29 +123,6 @@ const JobsCard = ({ jobs }: JobsDataProps) => {
 };
 
 export default JobsCard;
-
-function LocateIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="2" x2="5" y1="12" y2="12" />
-      <line x1="19" x2="22" y1="12" y2="12" />
-      <line x1="12" x2="12" y1="2" y2="5" />
-      <line x1="12" x2="12" y1="19" y2="22" />
-      <circle cx="12" cy="12" r="7" />
-    </svg>
-  );
-}
 
 function Linkedin(props: any) {
   return (

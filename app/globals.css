@@ -36,6 +36,11 @@
   }
 }
 
+html,
+body {
+  background-color: #fafbfb;
+}
+
 .gradient {
   background: rgb(93, 0, 66);
   background: linear-gradient(

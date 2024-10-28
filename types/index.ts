@@ -26,21 +26,22 @@ export interface ExperienceInputProps {
 interface JobsData {
   _id: string;
   jobId: string;
-  __v: number;
   applyLink: string;
   company: string;
   companyLogo: string;
   descriptionHTML: string;
-  employees: string;
-  jobInfo: string;
+  experiences: string[];
   jobTitle: string;
-  jobType: string;
+  knowledge: string[];
   link: string;
   location: string;
-  locationType: string;
-  salary: string;
+  otherData: string;
+  jobDetailPreferences: string;
 }
 
 export interface JobsDataProps {
+  type: string;
   jobs: JobsData[];
+
+  user: User;
 }

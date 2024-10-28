@@ -4,7 +4,13 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Experience, UserProps } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "../ui/card";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
@@ -70,122 +76,58 @@ const ProfileForm: React.FC<UserProps> = ({ user }) => {
   if (!user) return;
 
   return (
-    <Tabs defaultValue="account" className="w-full flex p-5">
-      <TabsList className="flex flex-col w-44">
-        <TabsTrigger value="account">
-          <div className="flex items-center gap-2">
-            <CircleUser />
-            Account
+    <Card className="w-full flex flex-col p-5">
+      <CardHeader>
+        <CardTitle>Update Profile</CardTitle>
+        <CardDescription className="text-md font-semibold text-black">
+          By update your profile information with adding your skills and
+          experience helps us to provide you with most suitable jobs for you
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <img
+              src={user.photoUrl}
+              alt="User Photo"
+              className="w-24 h-24 rounded-full"
+            />
           </div>
-        </TabsTrigger>
-        <Separator className="my-4 " />
-        <TabsTrigger value="resume">
-          <div className="flex items-center gap-2">
-            <FileScan />
-            Resume
+          <div className="mb-4">
+            <Label>Display Name</Label>
+            <p className="text-xl font-bold">{user.displayName}</p>
           </div>
-        </TabsTrigger>
-      </TabsList>
-      <TabsContent className="w-full px-10" value="account">
-        <Card>
-          <CardHeader>
-            <CardTitle>Update Profile</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <img
-                  src={user.photoUrl}
-                  alt="User Photo"
-                  className="w-24 h-24 rounded-full"
-                />
-              </div>
-              <div className="mb-4">
-                <Label>Display Name</Label>
-                <p className="text-xl font-bold">{user.displayName}</p>
-              </div>
-              <div className="mb-4">
-                <Label>Email</Label>
-                <p className="text-xl font-bold">{user.email}</p>
-              </div>
-              <Separator className="my-4" />
+          <div className="mb-4">
+            <Label>Email</Label>
+            <p className="text-xl font-bold">{user.email}</p>
+          </div>
+          <Separator className="my-4" />
 
-              <div className="mb-4">
-                <Label>Industry</Label>
-                <p className="text-xl font-bold">Tech</p>
-              </div>
-              <div className="mb-4">
-                <TagInput
-                  id="skills"
-                  label="Skills"
-                  tags={profile.skills}
-                  onTagsChange={handleSkillsChange}
-                  options={skillsOptions}
-                />
-              </div>
-              <div className="mb-4">
-                <ExperienceInput
-                  experiences={profile.experience}
-                  onExperiencesChange={handleExperienceChange}
-                />
-              </div>
-              <Button onClick={handleSubmit} type="submit">
-                Update Profile
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </TabsContent>
-      {/* tab 2 */}
-      {/* <TabsContent value="password">
-        <Card>
-          <CardHeader>
-            <CardTitle>Update Profile</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <img
-                  src={user.photoUrl}
-                  alt="User Photo"
-                  className="w-24 h-24 rounded-full"
-                />
-              </div>
-              <div className="mb-4">
-                <Label>Display Name</Label>
-                <p className="text-xl font-bold">{user.displayName}</p>
-              </div>
-              <div className="mb-4">
-                <Label>Email</Label>
-                <p className="text-xl font-bold">{user.email}</p>
-              </div>
-              <Separator className="my-4" />
-
-              <div className="mb-4">
-                <Label htmlFor="skills">Skills</Label>
-                <TagInput
-                  id="skills"
-                  label="Skills"
-                  tags={profile.skills}
-                  onTagsChange={handleSkillsChange}
-                  options={skillsOptions}
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="experience">Experience</Label>
-                <Textarea
-                  id="experience"
-                  name="experience"
-                  value={profile.experience}
-                  onChange={handleChange}
-                />
-              </div>
-              <Button type="submit">Update Profile</Button>
-            </form>
-          </CardContent>
-        </Card>
-      </TabsContent> */}
-    </Tabs>
+          <div className="mb-4">
+            <Label>Industry</Label>
+            <p className="text-xl font-bold">Tech</p>
+          </div>
+          <div className="mb-4">
+            <TagInput
+              id="skills"
+              label="Skills"
+              tags={profile.skills}
+              onTagsChange={handleSkillsChange}
+              options={skillsOptions}
+            />
+          </div>
+          <div className="mb-4">
+            <ExperienceInput
+              experiences={profile.experience}
+              onExperiencesChange={handleExperienceChange}
+            />
+          </div>
+          <Button onClick={handleSubmit} type="submit">
+            Update Profile
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

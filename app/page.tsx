@@ -1,18 +1,29 @@
 import Link from "next/link";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {
   AlertCircle,
+  CheckCircle,
+  ChevronRight,
   CircleUserRound,
   PencilRuler,
+  Sliders,
+  Target,
   UserCheck,
+  Zap,
 } from "lucide-react";
 import FixedJobCard from "@/components/jobs/FixedJobCard";
 import JobsList from "@/components/jobs/JobsList";
-import { fetchUserData } from "@/lib/fetch";
+import { fetchJobs, fetchUserData } from "@/lib/fetch";
 import { cookies } from "next/headers";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default async function JobBoardLanding({
   searchParams,
@@ -21,7 +32,10 @@ export default async function JobBoardLanding({
 }) {
   const cookieStore = cookies();
   const cookie = cookieStore.get("connect.sid")?.value || "";
-  const user = await fetchUserData(cookie);
+  let user = await fetchUserData(cookie);
+
+  // Fetch the first 3 jobs
+  const jobsData = await fetchJobs({ page: 1, limit: 3 });
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
@@ -77,13 +91,13 @@ export default async function JobBoardLanding({
               <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                 Discover opportunities at top tech companies worldwide
               </p>
-              <div className="w-full space-y-2">
-                <Button
-                  variant="outline"
-                  className="text-xl w-1/4 font-semibold"
+              <div className="w-full py-6">
+                <Link
+                  href="/jobs"
+                  className="text-xl border border-black px-6 py-2 rounded-md w-1/4 font-semibold hover:bg-gray-800 hover:text-white transition-all"
                 >
-                  <Link href="/jobs">Find Jobs</Link>
-                </Button>
+                  Find Jobs
+                </Link>
               </div>
             </div>
           </div>
@@ -95,7 +109,15 @@ export default async function JobBoardLanding({
               Featured Jobs
             </h2>
             <div className="w-full">
-              <JobsList limit={3} />
+              <JobsList
+                showPagination={false}
+                jobsData={jobsData}
+                searchParams={searchParams}
+                page={1}
+                user={user!}
+                limit={5}
+                type="regular"
+              />
             </div>
             <div className="mt-12 text-center">
               <Button variant="outline" asChild>
@@ -106,71 +128,87 @@ export default async function JobBoardLanding({
         </section>
 
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center z-10 relative">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter text-foreground sm:text-5xl">
-                  Customize Your Profile
-                </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Tailor your profile to match your skills and preferences, and
-                  get personalized job recommendations.
-                </p>
-              </div>
+          <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
+            <h2 className="text-3xl font-bold text-center">
+              Customize Your Profile, Get Jobs Based On Your Experience
+            </h2>
+            <p className="text-center text-muted-foreground max-w-2xl mx-auto">
+              Tailor your profile with your tech skills and experience to get
+              personalized job recommendations and stand out to employers.
+            </p>
+            <div className="grid gap-6 md:grid-cols-3">
+              <Card>
+                <CardHeader>
+                  <Sliders className="w-10 h-10 text-primary mb-2" />
+                  <CardTitle>Personalized Matches</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Get job recommendations that align perfectly with your
+                    skills and experience level.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Target className="w-10 h-10 text-primary mb-2" />
+                  <CardTitle>Stand Out</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Highlight your unique skill set to catch the eye of top
+                    employers in your field.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Zap className="w-10 h-10 text-primary mb-2" />
+                  <CardTitle>Quick Apply</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Apply to matching jobs with just one click, using your
+                    customized profile information.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
-
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12 ">
-              <div className="relative w-full">
-                <div className="absolute top-0 left-0 w-32 h-32 bg-gray-200 rounded-full"></div>
-                <div className="absolute top-1/4 right-0 w-48 h-48 bg-gray-100 rounded-full"></div>
-                <div className="absolute bottom-0 left-1/4 w-24 h-24 bg-gray-200 rounded-full "></div>
-                <div className="absolute top-1/2 left-1/2 w-16 h-16 bg-gray-200 rounded-full"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-gray-100 rounded-full "></div>
-                <div className="flex relative z-10 justify-between items-center">
-                  <PencilRuler size={55} />
-                  <div className="flex-grow border-b-2 border-dotted border-gray-500 mx-2" />
-                  <CircleUserRound size={55} />
-                  <div className="flex-grow border-b-2 border-dotted border-gray-500 mx-2" />
-                  <UserCheck size={55} />
+            <Card className="mt-8">
+              <CardHeader>
+                <CardTitle className="text-2xl">Your Current Profile</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-semibold mb-2">Tech Skills</h4>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge>JavaScript</Badge>
+                    <Badge>React</Badge>
+                    <Badge>Node.js</Badge>
+                    <Badge variant="outline">Add more...</Badge>
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col justify-center space-y-4 z-10">
-                <ul className="grid gap-6">
-                  <li>
-                    <div className="grid gap-1">
-                      <div className="text-xl text-muted-foreground">
-                        Personalize your{" "}
-                        <Link
-                          href="/profile"
-                          className="border-b border-gray-500 hover:text-blue-600"
-                        >
-                          profile
-                        </Link>
-                        {!user && (
-                          <p className="text-sm text-muted-foreground text-red-600">
-                            This requires authentication
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="grid gap-1">
-                      <p className="text-xl text-muted-foreground">
-                        Set your tech skills & experience
-                      </p>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="grid gap-1">
-                      <p className="text-xl text-muted-foreground">
-                        Get more suitable job recommendations
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Experience Level</h4>
+                  <Badge variant="secondary">3-5 years</Badge>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between items-center">
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
+                  Finish up profile
+                </div>
+                {user && (
+                  <Link
+                    href="/profile"
+                    className="flex bg-gray-950 text-white rounded-md p-2 items-center "
+                  >
+                    Update Profile
+                    <ChevronRight className="w-4 h-4 ml-2" />
+                  </Link>
+                )}
+              </CardFooter>
+            </Card>
           </div>
         </section>
       </main>

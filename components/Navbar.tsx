@@ -27,26 +27,28 @@ const Navbar = ({ user }: UserProps) => {
             prefetch={false}
           >
             <BriefcaseIcon className="h-6 w-6" />
-            <span className="ml-2 text-xl font-bold">Tech Job</span>
+            <span className="ml-2 text-xl font-bold hidden">Tech Job</span>
           </Link>
-          <nav className="hidden md:flex gap-4">
+          <nav className="flex gap-8 font-bold text-md">
             <Link
               href="/"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
+              className="flex items-center transition-colors hover:underline"
               prefetch={false}
             >
               Home
             </Link>
-            <Link
-              href="/profile"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
-              prefetch={false}
-            >
-              Profile
-            </Link>
+            {user && (
+              <Link
+                href="/profile"
+                className="flex items-center transition-colors hover:underline"
+                prefetch={false}
+              >
+                Profile
+              </Link>
+            )}
             <Link
               href="/jobs"
-              className="font-medium flex items-center text-sm transition-colors hover:underline"
+              className="flex items-center transition-colors hover:underline"
               prefetch={false}
             >
               Jobs
@@ -97,17 +99,30 @@ const Navbar = ({ user }: UserProps) => {
               </DropdownMenu>
             </div>
           ) : (
-            <div className="flex items-center gap-4">
-              <a href="http://localhost:8080/auth/google">
-                <Button
-                  className="flex items-center gap-2"
-                  variant="outline"
-                  size="sm"
-                >
-                  <GoogleIcon className="h-6 w-6" /> Sign in with google
-                </Button>
-              </a>
-            </div>
+            <>
+              <div className="xl:flex lg:flex md:flex hidden items-center gap-4">
+                <a href="http://localhost:8080/auth/google">
+                  <Button
+                    className="flex items-center gap-2"
+                    variant="outline"
+                    size="sm"
+                  >
+                    <GoogleIcon className="h-6 w-6" /> Sign in with google
+                  </Button>
+                </a>
+              </div>
+              <div className="xl:hidden lg:hidden md:hidden flex items-center gap-4">
+                <a href="http://localhost:8080/auth/google">
+                  <Button
+                    className="flex items-center gap-2"
+                    variant="outline"
+                    size="sm"
+                  >
+                    <GoogleIcon className="h-6 w-6" />
+                  </Button>
+                </a>
+              </div>
+            </>
           )}
         </div>
       </div>

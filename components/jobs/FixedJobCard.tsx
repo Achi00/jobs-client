@@ -65,7 +65,7 @@ const FixedJobCard = () => {
       position: "Digital Marketing Specialist",
       department: "Remote",
       type: "FULL TIME" as "FULL TIME", // Add this line
-      date: "May 24, 2020",
+      date: "May 24, 2024",
       logo: WebflowIcon,
     },
     {
@@ -73,7 +73,7 @@ const FixedJobCard = () => {
       position: "Senior Backend Engineer",
       department: "Remote",
       type: "FULL TIME" as "FULL TIME", // Add this line
-      date: "May 24, 2020",
+      date: "May 24, 2024",
       logo: GoogleIcon,
     },
     {
@@ -81,12 +81,12 @@ const FixedJobCard = () => {
       position: "ReactJS Developer",
       department: "Hybrid",
       type: "PART TIME" as "PART TIME", // Add this line
-      date: "May 24, 2020",
+      date: "May 24, 2024",
       logo: FacebookIcon,
     },
   ];
   return (
-    <div className="p-4 w-3/4 flex flex-col items-center">
+    <div className="xl:p-4 lg:p-4 md:p-2 sm:p-2 w-3/4 flex flex-col items-center">
       {jobs.map((job, index) => (
         <JobCard key={index} {...job} />
       ))}
@@ -164,8 +164,8 @@ function FacebookIcon(props: any) {
         y2="40.615"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0" stop-color="#2aa4f4"></stop>
-        <stop offset="1" stop-color="#007ad9"></stop>
+        <stop offset="0" stopColor="#2aa4f4"></stop>
+        <stop offset="1" stopColor="#007ad9"></stop>
       </linearGradient>
       <path
         fill="url(#Ld6sqrtcxMyckEl6xeDdMa_uLWV5A9vXIPu_gr1)"

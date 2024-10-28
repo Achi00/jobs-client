@@ -28,11 +28,42 @@ export async function fetchUserData(cookie: string): Promise<User | null> {
   }
 }
 
-export async function fetchJobs({ page = 1, limit = 20 } = {}) {
+export async function fetchJobs({
+  page = 1,
+  limit = 20,
+  search = "",
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+} = {}) {
   try {
     const res = await axios.get(`${API_BASE_URL}/jobs/getjobs`, {
-      params: { page, limit },
+      params: { page, limit, search },
     });
+
+    if (!res.data || !res.data.jobs) {
+      throw new Error("No jobs found");
+    }
+
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    return null;
+  }
+}
+export async function fetchFeaturedJobs(
+  page: number = 1,
+  limit: number = 20,
+  id: string
+) {
+  try {
+    const res = await axios.get(
+      `${API_BASE_URL}/jobs/featuredjobs?userId=${id}`,
+      {
+        params: { page, limit },
+      }
+    );
 
     if (!res.data || !res.data.jobs) {
       throw new Error("No jobs found");
@@ -48,30 +79,6 @@ export async function fetchJobsWithID(id: string) {
   try {
     const res = await axios.get(`${API_BASE_URL}/jobs/getjobs/${id}`);
     if (!res.data) {
-      throw new Error("No jobs found");
-    }
-
-    return res.data;
-  } catch (error) {
-    console.error("Error fetching jobs:", error);
-    return null;
-  }
-}
-
-export async function fetchFeaturedJobs(
-  page: number = 1,
-  limit: number = 20,
-  id: string
-) {
-  try {
-    const res = await axios.get(
-      `${API_BASE_URL}/jobs/featuredjobs?userId=${id}`,
-      {
-        params: { page, limit },
-      }
-    );
-
-    if (!res.data || !res.data.jobs) {
       throw new Error("No jobs found");
     }
 
