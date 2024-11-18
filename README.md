@@ -1,4 +1,4 @@
-# Jobs Client Application
+# Tech Jobs Application. Client-side 
 
 **App Url**: https://linkedin.wordcrafter.io/
 
