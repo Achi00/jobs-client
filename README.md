@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Jobs Client Application
 
-## Getting Started
+**App Url**: https://linkedin.wordcrafter.io/
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The Jobs Client Application is a web-based platform designed to interact with custom express.js API which scrapes jobs data from linkedin and saves it in mongoDB database.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Repos of custom Express.js API:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+https://github.com/Achi00/jobs-server
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Tech Stack
 
-## Learn More
+- **Frontend**: Next.JS
 
-To learn more about Next.js, take a look at the following resources:
+- **Backend**: Node.js with Express.js
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Database**: MongoDB
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Authentication**: Google OAuth 2.0
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Google Authentication**:
+  • Users can log in using their Google accounts.
+  • User is able to set up profile from /profile page and get featured jobs listing based on there entered data which are
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  - Skills: this skill input in profile page provides input field which is attachhed to hard coded data
+  - Experience: this field inclides: `Job title`, `Company name`, `Duration`
+
+- **Job Listings**: The application fetches and displays job listings from a API, allowing users to browse and search for jobs with 2 options: `All Jobs` and `Featured Jobs`
+
+- API scrapes jobs from https://www.linkedin.com based on `location` and `query`,
+  in this case query is set to `query`: `Engineer`, because this engineering jobs app
