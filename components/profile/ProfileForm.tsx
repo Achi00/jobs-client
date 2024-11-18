@@ -53,7 +53,7 @@ const ProfileForm: React.FC<UserProps> = ({ user }) => {
     console.log("Updating profile");
     try {
       const response = await axios.post(
-        "http://localhost:8080/user/profile",
+        `${process.env.API_BASE_URL}/user/profile`,
         profile,
         {
           withCredentials: true,

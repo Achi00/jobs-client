@@ -49,7 +49,7 @@ const JobsCard = ({ jobs, type, user }: JobsDataProps) => {
           {type != "featured" && <SearchBox />}
         </div>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl w-full mx-auto">
-          {jobs.length > 0 ? (
+          {jobs && jobs.length > 0 ? (
             jobs?.map((job, index) => (
               <Card key={index} className="flex flex-col">
                 <CardHeader className="flex flex-row items-center gap-4">

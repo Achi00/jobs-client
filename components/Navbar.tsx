@@ -117,7 +117,7 @@ const Navbar = ({ user }: UserProps) => {
           ) : (
             <>
               <div className="xl:flex lg:flex md:flex hidden items-center gap-4">
-                <a href="http://localhost:8080/auth/google">
+                <a href={`${process.env.API_BASE_URL}/auth/google`}>
                   <Button
                     className="flex items-center gap-2"
                     variant="outline"
@@ -128,7 +128,7 @@ const Navbar = ({ user }: UserProps) => {
                 </a>
               </div>
               <div className="xl:hidden lg:hidden md:hidden flex items-center gap-4">
-                <a href="http://localhost:8080/auth/google">
+                <a href={`${process.env.API_BASE_URL}/auth/google`}>
                   <Button
                     className="flex items-center gap-2"
                     variant="outline"
