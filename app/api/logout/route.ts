@@ -12,9 +12,10 @@ export async function GET(request: NextRequest) {
     response.cookies.delete({
       name: "connect.sid",
       path: "/",
+      domain: process.env.NEXT_PUBLIC_DOMAIN,
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     return response;

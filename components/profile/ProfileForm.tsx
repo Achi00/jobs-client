@@ -30,7 +30,7 @@ const ProfileForm: React.FC<UserProps> = ({ user }) => {
     email: user.email || "",
     photoUrl: user.photoUrl || "",
     industry: ["Tech"], // Fixed to 'Tech' industry
-    skills: user.skills,
+    skills: user.skills || [],
     experience: user.experience || [],
   });
 
@@ -52,13 +52,9 @@ const ProfileForm: React.FC<UserProps> = ({ user }) => {
     e.preventDefault();
     console.log("Updating profile");
     try {
-      const response = await axios.post(
-        `${process.env.API_BASE_URL}/user/profile`,
-        profile,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.post(`${process.env.API_BASE_URL}/user/profile`, profile, {
+        withCredentials: true,
+      });
       ToastNotification({
         message: "Profile updated successfully",
         result: "success",
