@@ -15,6 +15,7 @@ import { UserProps } from "@/types";
 import { BriefcaseIcon, LogOut, User } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { useRouter } from "next/navigation";
+import { deleteCookie } from "@/actions";
 
 const Navbar = ({ user }: UserProps) => {
   const [position, setPosition] = useState("bottom");
@@ -22,13 +23,9 @@ const Navbar = ({ user }: UserProps) => {
   const router = useRouter();
   const handleLogOut = async () => {
     try {
-      const response = await fetch("/api/logout");
-      if (response.ok) {
-        setIsLoggedOut(true);
-        router.push("/");
-      } else {
-        console.error("Logout failed");
-      }
+      await deleteCookie();
+      setIsLoggedOut(true);
+      router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
     }
