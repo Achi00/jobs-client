@@ -8,14 +8,14 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
 
-    // Delete the cookie - fixed type signature
-    response.cookies.delete({
-      name: "connect.sid",
+    // Delete the cookie
+    response.cookies.set("connect.sid", "", {
       path: "/",
       domain: process.env.NEXT_PUBLIC_DOMAIN,
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       sameSite: "none",
+      maxAge: 0,
     });
 
     return response;
