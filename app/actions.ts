@@ -4,5 +4,5 @@ import { cookies } from "next/headers";
 
 export async function deleteCookie() {
   // Delete the cookie
-  (await cookies()).delete("connect.sid");
+  cookies().set("connect.sid", "", { expires: new Date(0) });
 }
