@@ -15,7 +15,7 @@ import { UserProps } from "@/types";
 import { BriefcaseIcon, LogOut, User } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { useRouter } from "next/navigation";
-import { deleteCookie } from "@/actions";
+import { deleteCookie } from "@/app/actions";
 
 const Navbar = ({ user }: UserProps) => {
   const [position, setPosition] = useState("bottom");
