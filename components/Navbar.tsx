@@ -25,7 +25,6 @@ const Navbar = ({ user }: UserProps) => {
     try {
       await deleteCookie();
       setIsLoggedOut(true);
-      router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
     }

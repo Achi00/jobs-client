@@ -6,20 +6,22 @@ export async function deleteCookie() {
   // Delete the cookie
   cookies().delete({
     name: "connect.sid",
+    domain: ".woedcrafter.io",
     path: "/",
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "none",
   });
 
   // Additionally, set an expired cookie
   cookies().set({
     name: "connect.sid",
     value: "",
+    domain: ".woedcrafter.io",
     expires: new Date(0),
     path: "/",
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "none",
   });
 }
