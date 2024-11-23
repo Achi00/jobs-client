@@ -3,6 +3,8 @@ import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const sessionId = req.cookies.get("connect.sid");
+  console.log("Middleware invoked");
+  console.log("Session ID:", sessionId);
 
   // Allow access to the home page and avoid infinite loop
   if (
@@ -17,6 +19,7 @@ export function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.set("alert", "autherror");
+    console.log("Redirecting to home due to missing session ID");
     return NextResponse.redirect(url);
   }
 
